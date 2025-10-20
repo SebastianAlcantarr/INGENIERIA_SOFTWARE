@@ -1,4 +1,3 @@
-
 def twosum(nums:list[int],target:int):
     for i in range(len(nums)):
         for j in range(i+1,len(nums)):
@@ -15,6 +14,8 @@ target = 3
 resultado = twosum(nums, target)
 
 print(resultado)
+
+print('ldld')
 
 
 
