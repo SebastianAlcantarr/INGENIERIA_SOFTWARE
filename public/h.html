@@ -1,0 +1,236 @@
+
+<html class="dark" lang="en"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mastering Derivatives</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        /* Simple smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "card-dark": "#161d2b",
+                        "success": "#2ECC71",
+                        "error": "#E74C3C"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#E0E0E0]">
+<div class="relative flex min-h-screen w-full">
+    <!-- Fixed Sidebar Navigation -->
+    <aside class="fixed left-0 top-0 h-screen w-64 bg-background-light dark:bg-background-dark border-r border-white/10 p-4 hidden lg:flex flex-col">
+        <div class="flex flex-col gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="Abstract blue and purple gradient circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAxYVJ8m9zLr4LnhxP0MZUtBIi3vmi5YztRjQJY321N8PeESC7FnwJUeSP28qDNwf38CA8Gl8AUIyCT8RJR5G_DbJC-XmiOBMVlHBOYBuW3iYprZY973bQfpe8evvxZtl9cntoHvBCH6Dzf5VT4mTgrVKynL7OgIEU85vBm9J30IrkApGwdfWfksMotbpPdITRLHO_XkzopGpiLrjTfMOHF6uvD1K7UFPUV5tp3uCcs4_TerelBb709KephLX3jVAcj5bD05qOFGzgI");'></div>
+                <div class="flex flex-col">
+                    <h1 class="text-white text-base font-medium leading-normal">Derivatives 101</h1>
+                    <p class="text-[#92a4c9] text-sm font-normal leading-normal">Calculus Course</p>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 mt-4">
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 dark:bg-[#232f48]" href="#introduction">
+                    <span class="material-symbols-outlined text-primary dark:text-white" style="font-size: 24px;">info</span>
+                    <p class="text-primary dark:text-white text-sm font-medium leading-normal">Introduction</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-white/5 transition-colors duration-200" href="#core-concepts">
+                    <span class="material-symbols-outlined text-white/70" style="font-size: 24px;">lightbulb</span>
+                    <p class="text-white text-sm font-medium leading-normal">Core Concepts</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-white/5 transition-colors duration-200" href="#rules">
+                    <span class="material-symbols-outlined text-white/70" style="font-size: 24px;">file_open</span>
+                    <p class="text-white text-sm font-medium leading-normal">Differentiation Rules</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-white/5 transition-colors duration-200" href="#interactive-graph">
+                    <span class="material-symbols-outlined text-white/70" style="font-size: 24px;">show_chart</span>
+                    <p class="text-white text-sm font-medium leading-normal">Interactive Graph</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-white/5 transition-colors duration-200" href="#exercises">
+                    <span class="material-symbols-outlined text-white/70" style="font-size: 24px;">edit</span>
+                    <p class="text-white text-sm font-medium leading-normal">Practice Exercises</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-white/5 transition-colors duration-200" href="#resources">
+                    <span class="material-symbols-outlined text-white/70" style="font-size: 24px;">link</span>
+                    <p class="text-white text-sm font-medium leading-normal">Further Resources</p>
+                </a>
+            </div>
+        </div>
+        <div class="mt-auto flex flex-col gap-3 p-4">
+            <div class="flex gap-6 justify-between"><p class="text-white text-base font-medium leading-normal">Your Progress</p></div>
+            <div class="rounded bg-[#324467]"><div class="h-2 rounded bg-primary" style="width: 15%;"></div></div>
+        </div>
+    </aside>
+    <!-- Main Content Area -->
+    <main class="w-full lg:ml-64 flex flex-col">
+        <div class="flex-1 p-4 sm:p-6 md:p-8 lg:p-12">
+            <div class="mx-auto max-w-4xl">
+                <!-- 1. Hero Section -->
+                <section class="scroll-mt-20" id="introduction">
+                    <div class="@container">
+                        <div class="flex flex-col gap-6 py-10 @[480px]:gap-8 @[864px]:flex-row bg-card-dark rounded-xl p-6">
+                            <div class="flex flex-col gap-6 @[480px]:min-w-[400px] @[480px]:gap-8 @[864px]:justify-center">
+                                <div class="flex flex-col gap-2 text-left">
+                                    <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]">Mastering Derivatives</h1>
+                                    <h2 class="text-white/80 text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">An introduction to the fundamental concepts of calculus, explaining what derivatives are and why they are important in mathematics and beyond.</h2>
+                                </div>
+                                <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] hover:bg-primary/90 transition-colors">
+                                    <span class="truncate">Start Learning</span>
+                                </button>
+                            </div>
+                            <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg @[480px]:h-auto @[480px]:min-w-[300px] @[864px]:w-full" data-alt="An abstract visualization of a mathematical graph with glowing blue lines on a dark background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuARNf75QduYC_yH6A4uJ-p8WMTgX7fbQ3o1PTmMMSxEQ7xnkWOD4Kl_vjk5Q5TdXPm86vKoFsH7A75CpeORFHfuhOT9Ua-mqI5zzIM1LJcOjg1WA0YHfA48YZDuUssN-AOXkylyubGVfO8jljE8NYc-8ZzUGEI0F1JW9mD2-LkN1JWwhI_p4PkueyVBxQ8_3TtoD1fVNrmTsI2Dn7irxhhs6sHnsc6jCBSXGunpWI3smMo3tF2ioe3fnkNGBxcZOFBkE7op2EkHSBTM");'></div>
+                        </div>
+                    </div>
+                </section>
+                <!-- 2. Core Concepts Section -->
+                <section class="scroll-mt-20" id="core-concepts">
+                    <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-10">Core Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-4 bg-card-dark rounded-xl @container">
+                            <div class="flex flex-col items-stretch justify-start">
+                                <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg" data-alt="A graph showing a curve with a tangent line, illustrating the concept of a derivative as the slope at a point." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJGQNFTD7v37KcHj_z7S_iRlj8PM1n2JfAjD7NoDKoo2q6aQaWTtjpDMz3zUbNrAwmHqfEsUMh3g1ICoQCM-rbYg36lwUU_XXoHpeli8q3K6Q6Ptl9Oa_l9TUwO51p-C3Ux5xZ6TNFOA8mo2PoyxGj1oiyA1qG05aMO-ORRGXlaBP7FOmWG2fB07k2r8NUkNwk_y6XO83q_1S2sR-JzuGZA1HJh2--Ntm5z9ImkYK67QbAmiou6N0X7kdTYo7o5G1Nn93ri_mcJx75");'></div>
+                                <div class="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-1 py-4">
+                                    <p class="text-[#92a4c9] text-sm font-normal leading-normal">Definition</p>
+                                    <p class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">The Limit Definition of a Derivative</p>
+                                    <div class="flex flex-col gap-1 mt-2">
+                                        <p class="text-white/70 text-base font-normal leading-normal">The derivative of a function f(x) at a point 'a' is the limit of the difference quotient as h approaches zero. It represents the instantaneous rate of change.</p>
+                                        <p class="text-primary text-base font-mono leading-normal mt-2">f'(x) = lim(h→0) [f(x+h) - f(x)] / h</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-card-dark rounded-xl @container">
+                            <div class="flex flex-col items-stretch justify-start">
+                                <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg" data-alt="A close-up of a speedometer, representing the concept of instantaneous rate of change." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCS0ffke33e37V2i8NacWQhR-I3hkDiDFYKwW8OldE5JX1l9Ri6U4ElDomrKnd9-wKIUGElZ1iC1hJajZqH56uTQiXGfoW_IQ3hQZQtZ_OV3vVxQRhGwaD_1y6uc6nERLmrF-K1uEdtDt4HvFT5zQDEokf0oAe6AGpjt1GlTYMXVoy8Xe5sg249tWUVb52Y-GOnm3EKX31mq8emoe8SK8FXrQYdtkuQ1qlWSyDrEvdqmffZXahOvoCnvo1FNLbbVDYG_396bMF3_90x");'></div>
+                                <div class="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-1 py-4">
+                                    <p class="text-[#92a4c9] text-sm font-normal leading-normal">Interpretation</p>
+                                    <p class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Slope and Rate of Change</p>
+                                    <div class="flex flex-col gap-1 mt-2">
+                                        <p class="text-white/70 text-base font-normal leading-normal">Geometrically, the derivative is the slope of the tangent line to the function's graph at a given point. Physically, it represents the instantaneous rate of change of a quantity.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- 3. Differentiation Rules -->
+                <section class="scroll-mt-20" id="rules">
+                    <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-10">Differentiation Rules</h2>
+                    <div class="space-y-4">
+                        <!-- Code Block Component - Power Rule -->
+                        <div class="bg-card-dark p-4 rounded-xl">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-white font-semibold">Power Rule</h3>
+                                <button class="text-white/70 hover:text-white transition-colors flex items-center gap-2 text-sm">
+                                    <span class="material-symbols-outlined" style="font-size: 16px;">content_copy</span> Copy
+                                </button>
+                            </div>
+                            <div class="bg-background-dark p-4 rounded-lg mt-3">
+                                <pre><code class="font-mono text-white/90">If f(x) = xⁿ, then f'(x) = nxⁿ⁻¹</code></pre>
+                            </div>
+                        </div>
+                        <!-- Code Block Component - Product Rule -->
+                        <div class="bg-card-dark p-4 rounded-xl">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-white font-semibold">Product Rule</h3>
+                                <button class="text-white/70 hover:text-white transition-colors flex items-center gap-2 text-sm">
+                                    <span class="material-symbols-outlined" style="font-size: 16px;">content_copy</span> Copy
+                                </button>
+                            </div>
+                            <div class="bg-background-dark p-4 rounded-lg mt-3">
+                                <pre><code class="font-mono text-white/90">If h(x) = f(x)g(x), then h'(x) = f'(x)g(x) + f(x)g'(x)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- 4. Interactive Graphing Tool -->
+                <section class="scroll-mt-20" id="interactive-graph">
+                    <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-10">Interactive Graph</h2>
+                    <div class="bg-card-dark rounded-xl p-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="lg:col-span-2 bg-background-dark rounded-lg flex items-center justify-center p-4 min-h-[300px]">
+                                <img class="w-full h-auto object-contain rounded-md" data-alt="A placeholder image of a graph plotting the function f(x) = x squared" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbKlRvvoLfnjOe9tj77u40S_LFnMhTIEnCmdMs4oXPzH2viipbXo42iBzkvaZQ5VV-0fE3At6_b5dIc2-eAES0-py1Nh0JYLZP8WxWhneUR3yVxNwSrvNi22JYaZqHZymB3QPilsRjF1kWIg3w_z7ySs6qGCfAtNGomyMg8fcPUnnlXl-a7lSTqF-Ywfjym976pN7kBXFxUHh-sUt8TE7HUwPllgWlrFgw7EWP8WQy32DGVBeWH3anrk0xMH_fQwre1exkP5fEhuK8"/>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-white/80 mb-2" for="function-input">Function f(x)</label>
+                                    <div class="flex items-center gap-2 bg-background-dark rounded-lg p-2 border border-white/20 focus-within:border-primary">
+                                        <span class="text-white/50 pl-2">f(x) =</span>
+                                        <input class="bg-transparent w-full focus:ring-0 border-0 text-white p-0" id="function-input" type="text" value="x^2"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-white/80 mb-2" for="variable-slider">Adjust Variable 'a'</label>
+                                    <input class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary" id="variable-slider" max="100" min="0" type="range" value="50"/>
+                                </div>
+                                <button class="w-full mt-4 flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                                    Plot Derivative
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- 5. Practice Exercises -->
+                <section class="scroll-mt-20" id="exercises">
+                    <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-10">Practice Exercises</h2>
+                    <div class="bg-card-dark rounded-xl p-6 space-y-6">
+                        <!-- Exercise 1 -->
+                        <div>
+                            <p class="text-white/90">1. What is the derivative of <span class="font-mono text-primary">f(x) = 3x² + 5x - 2</span>?</p>
+                            <div class="flex items-center gap-4 mt-3">
+                                <input class="flex-grow bg-background-dark border border-white/20 rounded-lg px-3 py-2 text-white focus:ring-primary focus:border-primary" placeholder="Your answer" type="text"/>
+                                <button class="rounded-lg h-10 px-5 bg-primary/30 text-white hover:bg-primary/40 transition-colors text-sm font-medium">Check</button>
+                            </div>
+                        </div>
+                        <!-- Exercise 2 with feedback -->
+                        <div>
+                            <p class="text-white/90">2. Find the derivative of <span class="font-mono text-primary">f(x) = sin(x)</span>.</p>
+                            <div class="mt-3 space-y-2">
+                                <label class="flex items-center gap-3 p-3 rounded-lg border border-error bg-error/10">
+                                    <input class="form-radio bg-transparent border-white/50 text-primary focus:ring-primary" name="ex2" type="radio"/>
+                                    <span class="text-white/80">-cos(x)</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 rounded-lg border border-success bg-success/10">
+                                    <input checked="" class="form-radio bg-transparent border-white/50 text-primary focus:ring-primary" name="ex2" type="radio"/>
+                                    <span class="text-white/80">cos(x)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- 6. Further Resources -->
+                <section class="scroll-mt-20" id="resources">
+                    <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-10">Further Resources</h2>
+                    <div class="bg-card-dark rounded-xl p-6">
+                        <ul class="list-disc list-inside space-y-2 text-primary">
+                            <li><a class="text-white/80 hover:text-white underline" href="#">Khan Academy: Calculus 1</a></li>
+                            <li><a class="text-white/80 hover:text-white underline" href="#">3Blue1Brown: The Essence of Calculus</a></li>
+                            <li><a class="text-white/80 hover:text-white underline" href="#">Paul's Online Math Notes</a></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

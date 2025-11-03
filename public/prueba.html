@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>formulario</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        section { border: 1px solid #ccc; padding: 20px; margin-bottom: 30px; border-radius: 8px; }
+        input[type="text"], input[type="password"] { padding: 8px; margin-bottom: 10px; width: 200px; display: block; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .success { color: green; }
+        .error { color: red; }
+        .question { margin-bottom: 15px; }
+        .option { margin-right: 15px; }
+        .geogebra-container { width: 100%; max-width: 800px; margin: 20px auto; }
+        .geogebra-container iframe { width: 100%; height: 500px; border: none; }
+    </style>
+</head>
+<body>
+
+<h1>Propuestas</h1>
+
+<section id="login-section">
+    <h2>Login</h2>
+    <form id="form-login">
+        <div>
+            <label for="login-username">Usuario:</label>
+            <input type="text" id="login-username" required value="admin"> </div>
+        <div>
+            <label for="login-password">Contraseña:</label>
+            <input type="password" id="login-password" required value="password"> </div>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+    <div id="mensaje-login" style="margin-top: 10px;"></div>
+</section>
+
+<section id="geogebra-section">
+    <h2>Grafica interactiva</h2>
+    <div class="geogebra-container">
+        <iframe src="https://www.geogebra.org/classic?embed" allowfullscreen></iframe>
+    </div>
+</section>
+
+<section id="examen-section">
+    <h2>Interfaz de Examen</h2>
+    <p>Una sección para que los estudiantes realicen exámenes o ejercicios interactivos.</p>
+    <form id="form-examen">
+        <div class="question">
+            <p><strong>Pregunta 1:</strong> ¿Cuál es la derivada de \(f(x) = x^2\)?</p>
+            <label class="option"><input type="radio" name="q1" value="a"> \(2x\)</label>
+            <label class="option"><input type="radio" name="q1" value="b"> \(x\)</label>
+            <label class="option"><input type="radio" name="q1" value="c"> \(2\)</label>
+        </div>
+        <div class="question">
+            <p><strong>Pregunta 2:</strong> Si \(g(x) = 3x + 5\), ¿cuál es \(g'(x)\)?</p>
+            <label class="option"><input type="radio" name="q2" value="a"> \(3x\)</label>
+            <label class="option"><input type="radio" name="q2" value="b"> \(5\)</label>
+            <label class="option"><input type="radio" name="q2" value="c"> \(3\)</label>
+        </div>
+        <button type="submit">Corregir Examen</button>
+    </form>
+    <div id="resultado-examen" style="margin-top: 15px;"></div>
+</section>
+
+<hr>
+<h1>Formulario</h1>
+
+<form id="form-guardar">
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+    </div>
+    <div>
+        <label for="apellido1">Primer apellido:</label>
+        <input type="text" id="apellido1" required>
+    </div>
+    <div>
+        <label for="apellido2">Segundo apellido:</label>
+        <input type="text" id="apellido2" required>
+    </div>
+    <button type="submit">Guardar</button>
+</form>
+
+<div id="mensaje-guardar"></div>
+
+<hr>
+
+<h2>Usuarios Guardados</h2>
+
+<button id="btn-mostrar">Cargar Usuarios</button>
+
+<div id="lista-usuarios"></div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+
+        const formGuardar = document.getElementById("form-guardar");
+        const msgGuardar = document.getElementById("mensaje-guardar");
+
+        formGuardar.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const nombre = document.getElementById("nombre").value;
+            const apellido1 = document.getElementById("apellido1").value;
+            const apellido2 = document.getElementById("apellido2").value;
+            const data = { nombre, apellido1, apellido2 };
+
+            try {
+                const response = await fetch("/guardar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    msgGuardar.innerHTML = "Usuario guardado con éxito";
+                    msgGuardar.style.color = "green";
+                    formGuardar.reset();
+                } else {
+                    msgGuardar.innerHTML = "Error: " + (result.error || "No se pudo guardar");
+                    msgGuardar.style.color = "red";
+                }
+            } catch (error) {
+                msgGuardar.innerHTML = "Error de conexión: " + error;
+                msgGuardar.style.color = "red";
+            }
+        });
+
+        const btnMostrar = document.getElementById("btn-mostrar");
+        const listaUsuarios = document.getElementById("lista-usuarios");
+
+        btnMostrar.addEventListener("click", async () => {
+            listaUsuarios.innerHTML = "Cargando...";
+            try {
+                const response = await fetch("/mostrar", { method: "GET" });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    listaUsuarios.innerHTML = "Error: " + (data.error || "No se pudo cargar");
+                    listaUsuarios.style.color = "red";
+                    return;
+                }
+
+                listaUsuarios.innerHTML = "";
+                listaUsuarios.style.color = "black";
+                if (data.length === 0) {
+                    listaUsuarios.innerHTML = "No hay usuarios en la base de datos.";
+                    return;
+                }
+
+                const ul = document.createElement("ul");
+                data.forEach(user => {
+                    const li = document.createElement("li");
+                    li.textContent = ${user.nombre} ${user.apellido1} ${user.apellido2};
+                    ul.appendChild(li);
+                });
+                listaUsuarios.appendChild(ul);
+            } catch (error) {
+                listaUsuarios.innerHTML = "Error de conexión: " + error;
+                listaUsuarios.style.color = "red";
+            }
+        });
+
+        const formLogin = document.getElementById("form-login");
+        const mensajeLogin = document.getElementById("mensaje-login");
+
+        formLogin.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const username = document.getElementById("login-username").value;
+            const password = document.getElementById("login-password").value;
+
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    mensajeLogin.textContent = result.message;
+                    mensajeLogin.className = "success";
+                } else {
+                    mensajeLogin.textContent = result.detail || "Error al iniciar sesión.";
+                    mensajeLogin.className = "error";
+                }
+            } catch (error) {
+                mensajeLogin.textContent = "Error de conexión: " + error;
+                mensajeLogin.className = "error";
+            }
+        });
+
+        const formExamen = document.getElementById("form-examen");
+        const resultadoExamen = document.getElementById("resultado-examen");
+
+        formExamen.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const respuestasCorrectas = {
+                q1: "a", // Derivada de x^2 es 2x
+                q2: "c"  // Derivada de 3x + 5 es 3
+            };
+
+            let score = 0;
+            let totalQuestions = 0;
+            let feedbackHTML = "<h3>Resultados:</h3><ul>";
+
+            // Pregunta 1
+            const q1Answer = document.querySelector('input[name="q1"]:checked');
+            totalQuestions++;
+            if (q1Answer && q1Answer.value === respuestasCorrectas.q1) {
+                score++;
+                feedbackHTML += <li>Pregunta 1: Correcta! (\(2x\)) <span class="success">&#10003;</span></li>;
+            } else {
+                feedbackHTML += <li>Pregunta 1: Incorrecta. La respuesta correcta era \(2x\). <span class="error">&#10007;</span></li>;
+            }
+
+            // Pregunta 2
+            const q2Answer = document.querySelector('input[name="q2"]:checked');
+            totalQuestions++;
+            if (q2Answer && q2Answer.value === respuestasCorrectas.q2) {
+                score++;
+                feedbackHTML += <li>Pregunta 2: Correcta! (\(3\)) <span class="success">&#10003;</span></li>;
+            } else {
+                feedbackHTML += <li>Pregunta 2: Incorrecta. La respuesta correcta era \(3\). <span class="error">&#10007;</span></li>;
+            }
+
+            feedbackHTML += "</ul>";
+
+            feedbackHTML += <p><strong>Puntuación final: ${score} de ${totalQuestions}</strong></p>;
+
+            resultadoExamen.innerHTML = feedbackHTML;
+        });
+
+    });
+</script>
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+    Mathjax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+
+</body>
+</html>
